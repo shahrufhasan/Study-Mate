@@ -10,9 +10,8 @@ const BannerCarousel = () => {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto slide every 4 seconds
   useEffect(() => {
-    if (isPaused) return; // pause on hover
+    if (isPaused) return;
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % banners.length);
     }, 4000);
@@ -26,12 +25,11 @@ const BannerCarousel = () => {
   return (
     <div
       className="relative w-full overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)} // pause on hover
+      onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Single video element with opacity animation */}
       <motion.video
-        key={current} // triggers Framer Motion animation on src change
+        key={current}
         autoPlay
         loop
         muted
@@ -44,7 +42,6 @@ const BannerCarousel = () => {
         <source src={banners[current]} type="video/mp4" />
       </motion.video>
 
-      {/* Left / Right Navigation Buttons */}
       <button
         onClick={prevSlide}
         className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2
@@ -64,7 +61,6 @@ const BannerCarousel = () => {
         &#10095;
       </button>
 
-      {/* Optional: Dots Navigation */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {banners.map((_, index) => (
           <span

@@ -85,8 +85,12 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end flex gap-2">
-        <a className="btn btn-grediant">Log In</a>
-        <a className="btn btn-outline btn-secondary">Register</a>
+        <Link to="/login" className="btn btn-grediant">
+          Log In
+        </Link>
+        <Link to="/register" className="btn btn-outline btn-secondary">
+          Register
+        </Link>
       </div>
     </div>
   );
