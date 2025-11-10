@@ -15,14 +15,14 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #20dddb;
-  --color-secondary: #5c7cea;
+  --color-primary: #4a90dc;
+  --color-secondary: #f27e58;
   --color-base-200: #f3f3f3;
   --color-base-300: #e7e7e7;
   --color-accent: #706f6f;
 }
-.btn-grediant {
-  background: linear-gradient(90deg, #20dddb, #5c7cea);
+/* .btn-grediant {
+  background: linear-gradient(120deg, #4a90dc, #f27e58);
   border: none;
   color: white;
 }
@@ -31,13 +31,14 @@
   color: #5c7cea;
   transition: all 0.2s ease-out;
   border: 1px solid #5c7cea;
-}
+} */
 
-.glass-card {
+.liquid-card {
+  position: sticky;
+  top: 0;
   background: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  /* border-radius: 20px; */
   border: 1px solid rgba(255, 255, 255, 0.3);
   /* overflow: hidden; */
 }

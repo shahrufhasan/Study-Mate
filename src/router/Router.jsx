@@ -6,6 +6,7 @@ import MyConncetion from "../pages/MyConnection/MyConncetion";
 import CreatePartnerProfile from "../pages/CreatePartnerProfile/CreatePartnerProfile";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import PrivateRoute from "../provider/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -22,11 +23,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/createProfile",
-        element: <CreatePartnerProfile></CreatePartnerProfile>,
+        element: (
+          <PrivateRoute>
+            <CreatePartnerProfile></CreatePartnerProfile>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/myConncetion",
-        element: <MyConncetion></MyConncetion>,
+        element: (
+          <PrivateRoute>
+            <MyConncetion></MyConncetion>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
