@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router";
-import heroBg from "/hero-bg.jpg";
 
 const slides = [
   {
@@ -11,20 +10,23 @@ const slides = [
       "Connect with students who share your academic goals and learning style. Build meaningful study relationships.",
     cta: "Get Started",
     link: "/register",
+    bg: "/hero3.jpg",
   },
   {
     title: "Collaborate & Excel Together",
     description:
       "Join study groups, share resources, and achieve academic excellence through collaborative learning.",
     cta: "Find Partners",
-    link: "/find-partners",
+    link: "/findPartners",
+    bg: "/hero2.jpg",
   },
   {
     title: "Build Your Academic Network",
     description:
       "Create your profile, showcase your achievements, and connect with like-minded students worldwide.",
     cta: "Create Profile",
-    link: "/create-profile",
+    link: "/createProfile",
+    bg: "/hero.jpg",
   },
 ];
 
@@ -34,7 +36,7 @@ const Banner = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 4000); // faster auto-slide (4s instead of 5s)
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -43,44 +45,47 @@ const Banner = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <div className="relative w-full h-[500px] md:h-[650px] overflow-hidden">
-      {/* Background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-        style={{ backgroundImage: `url(${heroBg})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#20dddb]/90 via-[#20dddb]/80 to-[#5c7cea]/70" />
-      </div>
+    <div className="relative w-screen h-[500px] md:h-[650px] overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute inset-0 w-screen h-full bg-center bg-cover bg-no-repeat"
+          style={{ backgroundImage: `url(${slides[current].bg})` }}
+        >
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
 
-      {/* Animated Slide Content */}
-      <div className="relative h-full flex items-center justify-center px-6">
-        <div className="max-w-4xl text-center">
-          <AnimatePresence mode="wait">
+          {/* Slide Content */}
+          <div className="relative h-full flex items-center justify-center px-6">
             <motion.div
-              key={current}
+              key={current + "-content"}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }} // faster & smoother
-              className="space-y-6"
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="max-w-4xl text-center space-y-6"
             >
-              <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+              <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(0,0,0,0.7)]">
                 {slides[current].title}
               </h1>
-              <p className="text-lg md:text-2xl text-white/90 max-w-2xl mx-auto">
+              <p className="text-lg md:text-2xl text-white/90 drop-shadow-[0_0_15px_rgba(0,0,0,0.6)] max-w-2xl mx-auto">
                 {slides[current].description}
               </p>
 
               <Link
                 to={slides[current].link}
-                className="inline-block px-8 py-4 mt-4 rounded-lg text-lg font-semibold text-white bg-[#f27e58] border-2 border-[#f27e58] hover:bg-transparent hover:text-[#f27e58] transition-all duration-300"
+                className="inline-block px-8 py-4 mt-4 rounded-lg text-lg font-semibold text-white bg-[#f27e58] border-2 border-[#f27e58] hover:bg-transparent hover:text-[#f27e58] transition-all duration-300 drop-shadow-lg"
               >
                 {slides[current].cta}
               </Link>
             </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Navigation Buttons */}
       <button

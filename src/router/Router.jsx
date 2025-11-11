@@ -19,6 +19,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/findPartners",
+        loader: () => fetch("http://localhost:3000/students"),
         element: <FindPartner></FindPartner>,
       },
       {
