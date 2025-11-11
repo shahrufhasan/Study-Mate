@@ -1,7 +1,7 @@
 import React from "react";
 
 const MyConncetion = () => {
-  return <div>My Conncection</div>;
+  return <div>My Connection</div>;
 };
 
 export default MyConncetion;

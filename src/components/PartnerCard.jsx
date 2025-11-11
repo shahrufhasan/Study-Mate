@@ -7,9 +7,11 @@ import {
   Wifi,
   Laptop,
 } from "lucide-react";
+import { Link } from "react-router";
 
 const PartnerCard = ({ partner }) => {
   const {
+    _id,
     name,
     profileImage,
     subject,
@@ -134,9 +136,12 @@ const PartnerCard = ({ partner }) => {
         </div>
 
         <div className="mt-4">
-          <button className="w-full btn bnt-outline btn-secondary">
+          <Link
+            to={`/partnerdetails/${_id}`}
+            className="w-full btn bnt-outline btn-secondary"
+          >
             View Profile{" "}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

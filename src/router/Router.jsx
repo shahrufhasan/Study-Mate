@@ -7,6 +7,7 @@ import CreatePartnerProfile from "../pages/CreatePartnerProfile/CreatePartnerPro
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import PrivateRoute from "../provider/PrivateRoute";
+import PartnerDetails from "../pages/PartnerDetails/PartnerDetails";
 
 export const router = createBrowserRouter([
   {
@@ -32,9 +33,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "/myConncetion",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/partnerdetails/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/partners/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <PartnerDetails></PartnerDetails>
           </PrivateRoute>
         ),
       },

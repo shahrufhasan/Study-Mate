@@ -1,5 +1,4 @@
 import React, { use, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
@@ -183,8 +182,6 @@ const CreatePartnerProfile = () => {
           </button>
         </form>
       </div>
-
-      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
