@@ -9,6 +9,7 @@ const Register = () => {
   const { createUser, setUser, updateUser, signInWithGoogle } =
     use(AuthContext);
   const [nameError, setNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,6 +29,14 @@ const Register = () => {
     const photo = form.photo.value;
     const password = form.password.value;
 
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])/;
+    if (!passwordPattern.test(password)) {
+      setPasswordError(
+        "Password must contain at least one lowercase and one uppercase letter"
+      );
+      return;
+    }
+
     createUser(email, password)
       .then((result) => {
         const user = result.user;
@@ -45,7 +54,14 @@ const Register = () => {
           })
           .catch(() => setUser(user));
       })
-      .catch((error) => alert(error.code));
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.code,
+          footer: '<a href="#">Why do I have this issue?</a>',
+        });
+      });
   };
 
   const handleGoogleRegister = () => {
@@ -69,9 +85,9 @@ const Register = () => {
     <div className="flex justify-center min-h-screen items-center">
       <div className="card bg-base-100 w-full max-w-sm shadow-2xl py-5 space-y-3">
         <div className="text-center">
-          <h4 className="font-semibold text-4xl mb-4">Join GreenNest</h4>
+          <h4 className="font-semibold text-4xl mb-4">Join Study Mate</h4>
           <p className="text-primary text-sm">
-            Register to continue your green journey
+            Register to continue your journey
           </p>
         </div>
 
@@ -112,6 +128,7 @@ const Register = () => {
             placeholder="Password"
             required
           />
+          {passwordError && <p className="text-red-500">{passwordError}</p>}
 
           <button type="submit" className="btn btn-primary mt-4 w-full">
             Register
