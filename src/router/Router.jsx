@@ -11,6 +11,7 @@ import PartnerDetails from "../pages/PartnerDetails/PartnerDetails";
 import UpdatePartner from "../pages/UpdatePartner/UpdatePartner";
 import MyProfile from "../pages/MyProfile/MyProfile";
 import TopRatedPartner from "../pages/TopRatedPartner/TopRatedPartner";
+import About from "../pages/About/About";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +20,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        loader: () => fetch("http://localhost:3000/latest-partners"),
         element: <Home></Home>,
       },
+
       {
         path: "/findPartners",
         loader: () => fetch("http://localhost:3000/partners"),
@@ -34,11 +37,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/latest-partners",
-        loader: () => fetch("http://localhost:3000/latest-partners"),
-        element: <TopRatedPartner></TopRatedPartner>,
-      },
+
       {
         path: "/my-conncetion",
         element: (
