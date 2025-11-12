@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router"; // keeping your original import
 import logo from "/logo.png";
 import { AuthContext } from "../provider/AuthContext";
 import Swal from "sweetalert2";
+import { FaRegUser } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = use(AuthContext);
@@ -42,7 +43,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
-              to="/myConncetion"
+              to="/my-conncetion"
               className={({ isActive }) =>
                 isActive ? "text-primary font-bold" : "text-gray-700"
               }
@@ -121,7 +122,13 @@ const Navbar = () => {
 
             <div className="dropdown-content   absolute right-0 top-12 bg-base-100 shadow-lg rounded-lg w-48 p-3 flex flex-col z-50">
               <span className="font-semibold mb-2 truncate">
-                {user.displayName || "User"}
+                <Link
+                  to="/my-profile"
+                  className="flex items-center gap-3 hover:underline mb-2"
+                >
+                  <FaRegUser />
+                  {user.displayName || "User"}
+                </Link>
               </span>
               <button
                 onClick={handleSignOut}

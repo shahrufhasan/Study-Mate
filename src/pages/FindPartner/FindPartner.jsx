@@ -4,7 +4,6 @@ import PartnerCard from "../../components/PartnerCard";
 
 const FindPartner = () => {
   const data = useLoaderData();
-  console.log(data);
   return (
     <div className="my-10 max-w-7xl mx-auto">
       <h2 className="text-5xl text-center my-5">All the study partners</h2>

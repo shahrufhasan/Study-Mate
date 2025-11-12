@@ -1,62 +1,78 @@
 import React from "react";
-import logo from "/logo.png"; // Replace with your logo path
+import logo from "/logo.png";
 import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
+  FaFacebook,
+  FaLinkedin,
   FaInstagram,
-} from "react-icons/fa";
+  FaXTwitter, // The X (Twitter) icon from react-icons
+} from "react-icons/fa6"; // use fa6 for the updated X icon
 
 const Footer = () => {
   return (
-    <footer className="footer bg-base-200 text-base-content p-10 rounded-t-lg">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Column 1: Logo & Description */}
+    <footer className="bg-base-200 text-base-content mt-10 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <div className="flex items-center mb-2">
-            <img src={logo} alt="Logo" className="w-12 h-12 mr-2" />
-            <span className="text-xl font-bold">ProjectName</span>
+          <div className="flex items-center gap-3 mb-3">
+            <img src={logo} alt="StudyMate Logo" className="w-10 h-10" />
+            <h2 className="text-2xl font-bold text-primary">StudyMate</h2>
           </div>
-          <p className="text-gray-600 max-w-sm">
-            ProjectName is a platform that connects partners and professionals,
-            helping you build meaningful connections and grow your network.
+          <p className="text-gray-600 text-sm leading-relaxed">
+            StudyMate helps students and learners find compatible study
+            partners, collaborate effectively, and grow together through shared
+            learning experiences.
           </p>
         </div>
 
-        {/* Column 2: Navigation Links */}
         <div className="flex flex-col items-center">
-          <h3 className="font-semibold mb-2">Quick Links</h3>
-          <nav className="grid gap-2">
-            <a className="link link-hover">About Us</a>
-            <a className="link link-hover">Contact</a>
-            <a className="link link-hover">Jobs</a>
-            <a className="link link-hover">Press Kit</a>
-          </nav>
-        </div>
-
-        {/* Column 3: Social Media */}
-        <div className="flex flex-col items-center">
-          <h3 className="font-semibold mb-2">Follow Us</h3>
-          <div className="flex gap-4 mt-2">
-            <a className="p-2 rounded-full bg-gray-800 hover:bg-blue-600 transition text-white">
-              <FaFacebookF />
+          <h3 className="font-semibold text-lg mb-3">Connect with us</h3>
+          <div className="flex gap-4 text-xl">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 transition"
+            >
+              <FaFacebook />
             </a>
-            <a className="p-2 rounded-full bg-gray-800 hover:bg-sky-400 transition text-white">
-              <FaTwitter />
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-800 hover:text-black transition"
+            >
+              <FaXTwitter />
             </a>
-            <a className="p-2 rounded-full bg-gray-800 hover:bg-blue-500 transition text-white">
-              <FaLinkedinIn />
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-700 hover:text-blue-900 transition"
+            >
+              <FaLinkedin />
             </a>
-            <a className="p-2 rounded-full bg-gray-800 hover:bg-pink-500 transition text-white">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-pink-500 hover:text-pink-700 transition"
+            >
               <FaInstagram />
             </a>
           </div>
         </div>
+
+        <div className="flex flex-col items-center md:items-end">
+          <h3 className="font-semibold text-lg mb-3">Stay Updated</h3>
+          <p className="text-gray-600 text-sm mb-2 text-center md:text-right">
+            Get the latest updates, study tips, and partner recommendations.
+          </p>
+          <button className="btn btn-primary btn-sm mt-2">Subscribe Now</button>
+        </div>
       </div>
 
-      {/* Bottom Section: Copyright */}
-      <div className="mt-10 border-t border-gray-300 pt-4 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} ProjectName. All rights reserved.
+      <div className="border-t border-gray-300 py-4 text-center text-sm text-gray-500">
+        © {new Date().getFullYear()}{" "}
+        <span className="font-semibold">StudyMate</span>. All rights reserved.
       </div>
     </footer>
   );

@@ -9,6 +9,8 @@ import Register from "../pages/Auth/Register";
 import PrivateRoute from "../provider/PrivateRoute";
 import PartnerDetails from "../pages/PartnerDetails/PartnerDetails";
 import UpdatePartner from "../pages/UpdatePartner/UpdatePartner";
+import MyProfile from "../pages/MyProfile/MyProfile";
+import TopRatedPartner from "../pages/TopRatedPartner/TopRatedPartner";
 
 export const router = createBrowserRouter([
   {
@@ -33,10 +35,23 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/myConncetion",
+        path: "/latest-partners",
+        loader: () => fetch("http://localhost:3000/latest-partners"),
+        element: <TopRatedPartner></TopRatedPartner>,
+      },
+      {
+        path: "/my-conncetion",
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-profile",
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
           </PrivateRoute>
         ),
       },
