@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import {
   Star,
   GraduationCap,
@@ -9,12 +9,15 @@ import {
   Wifi,
   Laptop,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 const PartnerDetails = () => {
   const data = useLoaderData();
   const partner = data.result;
+  const navigate = useNavigate();
 
   const {
+    _id,
     name,
     profileImage,
     rating = 0,
@@ -26,9 +29,6 @@ const PartnerDetails = () => {
     partnerCont,
   } = partner;
 
-  const navigate = useNavigate();
-
-  // Experience level badge color
   const badgeColor =
     experienceLevel === "Expert"
       ? "bg-green-300"
@@ -36,7 +36,6 @@ const PartnerDetails = () => {
       ? "bg-yellow-300"
       : "bg-red-300";
 
-  // Study mode icon
   const StudyModeIcon = () => {
     if (studyMode.toLowerCase() === "online")
       return <Wifi className="text-blue-500" size={16} />;
@@ -45,13 +44,55 @@ const PartnerDetails = () => {
     return <Monitor className="text-blue-500" size={16} />;
   };
 
-  // Numeric rating
   const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/partners/${partner._id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Partner has been deleted successfully.",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+              navigate("/findPartners");
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "Failed to delete partner.",
+                icon: "error",
+              });
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong.",
+              icon: "error",
+            });
+          });
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
       <div className="card bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
-        {/* Profile Image */}
         <div className="relative">
           <img
             src={profileImage}
@@ -65,10 +106,9 @@ const PartnerDetails = () => {
           </div>
         </div>
 
-        {/* Card Content */}
         <div className="p-6 flex flex-col gap-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800">{name}</h2>
-          {/* Details */}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-600 text-left">
             <div className="flex items-center gap-2">
               <GraduationCap className="text-purple-600" size={18} /> {subject}
@@ -91,13 +131,26 @@ const PartnerDetails = () => {
             </div>
           </div>
 
-          {/* Back button */}
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col gap-3">
             <button
               onClick={() => navigate(-1)}
               className="btn btn-outline btn-secondary w-full"
             >
-              Send Partner Request
+              Send Request
+            </button>
+
+            <Link
+              to={`/updatePartner/${_id}`}
+              className="btn btn-outline btn-primary w-full"
+            >
+              Update Info
+            </Link>
+
+            <button
+              onClick={handleDelete}
+              className="btn btn-outline btn-error w-full"
+            >
+              Delete Partner
             </button>
           </div>
         </div>

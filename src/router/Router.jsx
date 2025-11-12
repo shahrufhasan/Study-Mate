@@ -8,6 +8,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import PrivateRoute from "../provider/PrivateRoute";
 import PartnerDetails from "../pages/PartnerDetails/PartnerDetails";
+import UpdatePartner from "../pages/UpdatePartner/UpdatePartner";
 
 export const router = createBrowserRouter([
   {
@@ -33,8 +34,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "/myConncetion",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>
@@ -48,6 +47,16 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PartnerDetails></PartnerDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/updatePartner/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/partners/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <UpdatePartner></UpdatePartner>
           </PrivateRoute>
         ),
       },
