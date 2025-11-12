@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
 import {
   Star,
@@ -26,8 +26,12 @@ const PartnerDetails = () => {
     availabiityTime,
     experienceLevel,
     location,
-    partnerCont,
+    partnerCont: initialPartnerCont = 0,
   } = partner;
+
+  const [partnerCont, setPartnerCont] = useState(
+    Number(initialPartnerCont) || 0
+  );
 
   const badgeColor =
     experienceLevel === "Expert"
@@ -46,6 +50,40 @@ const PartnerDetails = () => {
 
   const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
 
+  const handleSendRequest = () => {
+    fetch(`http://localhost:3000/partners/${partner._id}/increment`, {
+      method: "PATCH",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          // Update partnerCont correctly
+          setPartnerCont((prev) => (prev || partner.partnerCont || 0) + 1);
+
+          Swal.fire({
+            title: "Request Sent!",
+            text: "Connection count increased successfully.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to increase connection count.",
+            icon: "error",
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong.",
+          icon: "error",
+        });
+      });
+  };
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -57,9 +95,7 @@ const PartnerDetails = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/partners/${partner._id}`, {
-          method: "DELETE",
-        })
+        fetch(`http://localhost:3000/partners/${_id}`, { method: "DELETE" })
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
@@ -133,7 +169,7 @@ const PartnerDetails = () => {
 
           <div className="mt-4 flex flex-col gap-3">
             <button
-              onClick={() => navigate(-1)}
+              onClick={handleSendRequest}
               className="btn btn-outline btn-secondary w-full"
             >
               Send Request
@@ -148,7 +184,7 @@ const PartnerDetails = () => {
 
             <button
               onClick={handleDelete}
-              className="btn btn-outline btn-error w-full"
+              className="btn btn-outline btn-secondary w-full"
             >
               Delete Partner
             </button>

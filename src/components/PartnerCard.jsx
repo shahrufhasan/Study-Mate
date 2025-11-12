@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Star,
   GraduationCap,
@@ -8,6 +8,7 @@ import {
   Laptop,
 } from "lucide-react";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const PartnerCard = ({ partner }) => {
   const {
@@ -18,13 +19,14 @@ const PartnerCard = ({ partner }) => {
     studyMode,
     experienceLevel,
     location,
-    rating = 0,
+    rating: initialRating = 0,
   } = partner;
 
-  const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
+  const [rating, setRating] = useState(Number(initialRating) || 0);
+  const [hover, setHover] = useState(null);
 
   const badgeColor = () => {
-    switch (experienceLevel.toLowerCase()) {
+    switch (experienceLevel?.toLowerCase()) {
       case "expert":
         return "bg-green-300";
       case "intermediate":
@@ -36,48 +38,46 @@ const PartnerCard = ({ partner }) => {
     }
   };
 
-  const FullStar = ({ size = 20 }) => (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 .587l3.668 7.431L23.6 9.75l-5.8 5.656L19.335 23 12 19.771 4.665 23l1.535-7.594L.4 9.75l7.932-1.732L12 .587z"
-        fill="#FACC15"
-      />
-    </svg>
-  );
-
-  const HalfStar = ({ size = 20 }) => (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient id="halfGrad">
-          <stop offset="50%" stopColor="#FACC15" />
-          <stop offset="50%" stopColor="transparent" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M12 .587l3.668 7.431L23.6 9.75l-5.8 5.656L19.335 23 12 19.771 4.665 23l1.535-7.594L.4 9.75l7.932-1.732L12 .587z"
-        fill="url(#halfGrad)"
-        stroke="#FACC15"
-        strokeWidth="1"
-      />
-    </svg>
-  );
-
   const StudyModeIcon = () => {
-    if (studyMode.toLowerCase() === "online")
+    if (studyMode?.toLowerCase() === "online")
       return <Wifi size={16} className="text-blue-500" />;
-    if (studyMode.toLowerCase() === "offline")
+    if (studyMode?.toLowerCase() === "offline")
       return <Laptop size={16} className="text-gray-600" />;
     return <Monitor size={16} className="text-blue-500" />;
+  };
+
+  const handleRating = (newRating) => {
+    setRating(newRating);
+    fetch(`http://localhost:3000/partners/${_id}/rating`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rating: newRating }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            title: "Rating Updated!",
+            text: `You rated ${name} ${newRating}`,
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to update rating.",
+            icon: "error",
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong.",
+          icon: "error",
+        });
+      });
   };
 
   return (
@@ -108,7 +108,6 @@ const PartnerCard = ({ partner }) => {
               <StudyModeIcon />
               {studyMode}
             </span>
-
             <span className="flex items-center gap-1">
               <MapPin size={16} className="text-red-500" />
               {location || "Unknown"}
@@ -116,31 +115,27 @@ const PartnerCard = ({ partner }) => {
           </div>
 
           <div className="flex justify-center items-center mb-5 gap-1">
-            {[...Array(5)].map((_, i) => {
-              if (numericRating >= i + 1) {
-                return <FullStar key={i} size={20} />;
-              } else if (numericRating > i && numericRating < i + 1) {
-                return <HalfStar key={i} size={20} />;
-              } else {
-                return (
-                  <Star
-                    key={i}
-                    size={20}
-                    strokeWidth={1.8}
-                    className="text-gray-300"
-                  />
-                );
-              }
-            })}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Star
+                key={i}
+                size={24}
+                className={`cursor-pointer transition-colors duration-200 ${
+                  i <= (hover || rating) ? "text-yellow-400" : "text-gray-300"
+                }`}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                onClick={() => handleRating(i)}
+              />
+            ))}
           </div>
         </div>
 
         <div className="mt-4">
           <Link
             to={`/partnerdetails/${_id}`}
-            className="w-full btn bnt-outline btn-secondary"
+            className="w-full btn btn-outline btn-secondary"
           >
-            View Profile{" "}
+            View Profile
           </Link>
         </div>
       </div>
