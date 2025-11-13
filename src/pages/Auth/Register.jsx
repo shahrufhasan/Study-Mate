@@ -29,6 +29,10 @@ const Register = () => {
     const photo = form.photo.value;
     const password = form.password.value;
 
+    if (password.length < 6) {
+      setPasswordError("password must be at least 6 characters");
+      return;
+    }
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])/;
     if (!passwordPattern.test(password)) {
       setPasswordError(

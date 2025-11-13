@@ -40,6 +40,8 @@ export const router = createBrowserRouter([
 
       {
         path: "/my-conncetion",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>

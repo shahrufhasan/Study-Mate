@@ -7,6 +7,7 @@ import { FaRegUser } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = use(AuthContext);
+
   const links = (
     <>
       <li>
@@ -112,10 +113,7 @@ const Navbar = () => {
             <div tabIndex={0} role="button" className="cursor-pointer">
               <div className="avatar">
                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100">
-                  <img
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt={user.displayName || "User"}
-                  />
+                  <img src={user.photoURL} />
                 </div>
               </div>
             </div>

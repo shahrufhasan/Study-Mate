@@ -57,10 +57,7 @@ const PartnerDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setPartnerCont((prev) => ({
-            ...prev,
-            partnerCont: (prev.partnerCont || 0) + 1,
-          }));
+          setPartnerCont((prev) => prev + 1);
 
           Swal.fire({
             title: "Request Sent!",

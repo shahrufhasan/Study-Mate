@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Star,
   GraduationCap,
@@ -8,7 +8,6 @@ import {
   Laptop,
 } from "lucide-react";
 import { Link } from "react-router";
-import Swal from "sweetalert2";
 
 const PartnerCard = ({ partner }) => {
   const {
@@ -19,11 +18,8 @@ const PartnerCard = ({ partner }) => {
     studyMode,
     experienceLevel,
     location,
-    rating: initialRating = 0,
+    rating = 0,
   } = partner;
-
-  const [rating, setRating] = useState(Number(initialRating) || 0);
-  const [hover, setHover] = useState(null);
 
   const badgeColor = () => {
     switch (experienceLevel?.toLowerCase()) {
@@ -44,40 +40,6 @@ const PartnerCard = ({ partner }) => {
     if (studyMode?.toLowerCase() === "offline")
       return <Laptop size={16} className="text-gray-600" />;
     return <Monitor size={16} className="text-blue-500" />;
-  };
-
-  const handleRating = (newRating) => {
-    setRating(newRating);
-    fetch(`http://localhost:3000/partners/${_id}/rating`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rating: newRating }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          Swal.fire({
-            title: "Rating Updated!",
-            text: `You rated ${name} ${newRating}`,
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false,
-          });
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: "Failed to update rating.",
-            icon: "error",
-          });
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong.",
-          icon: "error",
-        });
-      });
   };
 
   return (
@@ -119,12 +81,11 @@ const PartnerCard = ({ partner }) => {
               <Star
                 key={i}
                 size={24}
-                className={`cursor-pointer transition-colors duration-200 ${
-                  i <= (hover || rating) ? "text-yellow-400" : "text-gray-300"
-                }`}
-                onMouseEnter={() => setHover(i)}
-                onMouseLeave={() => setHover(null)}
-                onClick={() => handleRating(i)}
+                className={
+                  i <= rating
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
+                }
               />
             ))}
           </div>
