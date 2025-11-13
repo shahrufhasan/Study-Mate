@@ -43,7 +43,7 @@ const PartnerCard = ({ partner }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full max-w-sm mx-auto overflow-hidden flex flex-col">
+    <div className="rounded-2xl shadow-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full max-w-sm mx-auto overflow-hidden flex flex-col">
       <div className="relative">
         <img
           src={profileImage}

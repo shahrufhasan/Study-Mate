@@ -50,7 +50,7 @@ const Testimonials = () => {
         {testimonials.map((t) => (
           <div
             key={t.id}
-            className="bg-white shadow-md hover:shadow-xl transition rounded-2xl p-6 flex flex-col items-center text-center"
+            className=" shadow-md hover:shadow-xl transition rounded-2xl p-6 flex flex-col items-center text-center"
           >
             <img
               src={t.image}

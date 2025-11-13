@@ -21,7 +21,7 @@ const About = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl">
         {/* Card 1 */}
-        <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
+        <div className=" shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <Users className="text-primary w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">Connect with Learners</h3>
           <p className="text-gray-600 text-sm">
@@ -29,8 +29,7 @@ const About = () => {
           </p>
         </div>
 
-
-        <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
+        <div className=" shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <BookOpen className="text-blue-600 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">Learn & Collaborate</h3>
           <p className="text-gray-600 text-sm">
@@ -39,8 +38,7 @@ const About = () => {
           </p>
         </div>
 
-      
-        <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
+        <div className=" shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <HeartHandshake className="text-pink-500 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">
             Build Study Relationships
@@ -51,8 +49,7 @@ const About = () => {
           </p>
         </div>
 
-  
-        <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
+        <div className=" shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <Globe className="text-green-600 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">Study Anywhere</h3>
           <p className="text-gray-600 text-sm">
@@ -62,7 +59,6 @@ const About = () => {
         </div>
       </div>
 
-   
       <div className="mt-16 text-center max-w-3xl">
         <h2 className="text-3xl font-bold mb-4 text-gray-800">
           Join Our Learning Community
