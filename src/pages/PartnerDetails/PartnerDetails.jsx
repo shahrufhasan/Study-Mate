@@ -95,42 +95,8 @@ const PartnerDetails = () => {
       });
   };
 
-  const handleDelete = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won’t be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:3000/partners/${_id}`, { method: "DELETE" })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Partner has been deleted successfully.",
-                icon: "success",
-                timer: 1500,
-                showConfirmButton: false,
-              });
-              navigate("/findPartners");
-            } else {
-              Swal.fire("Error!", "Failed to delete partner.", "error");
-            }
-          })
-          .catch(() => {
-            Swal.fire("Error!", "Something went wrong.", "error");
-          });
-      }
-    });
-  };
-
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
+    <div className="min-h-screen flex justify-center items-center p-4">
       <div className="card bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
         <div className="relative">
           <img
@@ -179,18 +145,11 @@ const PartnerDetails = () => {
             </button>
 
             <Link
-              to={`/updatePartner/${_id}`}
+              to="/findPartners"
               className="btn btn-outline btn-primary w-full"
             >
-              Update Info
+              Back To All Partners
             </Link>
-
-            <button
-              onClick={handleDelete}
-              className="btn btn-outline btn-secondary w-full"
-            >
-              Delete Partner
-            </button>
           </div>
         </div>
       </div>

@@ -66,8 +66,8 @@ const UpdatePartner = () => {
   };
 
   return (
-    <div className="flex justify-center min-h-screen items-center  p-4">
-      <div className="card bg-base-100 w-full max-w-lg shadow-2xl py-5 space-y-3">
+    <div className="flex justify-center  items-center  p-4">
+      <div className="card w-full max-w-lg shadow-2xl py-5 space-y-3">
         <div className="text-center">
           <h4 className="font-semibold text-4xl mb-4">Update Study Partner</h4>
           <p className="text-primary text-sm">

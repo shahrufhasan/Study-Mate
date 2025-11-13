@@ -12,11 +12,13 @@ import UpdatePartner from "../pages/UpdatePartner/UpdatePartner";
 import MyProfile from "../pages/MyProfile/MyProfile";
 import TopRatedPartner from "../pages/TopRatedPartner/TopRatedPartner";
 import About from "../pages/About/About";
+import Error from "../pages/Error/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",

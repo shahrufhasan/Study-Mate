@@ -64,13 +64,13 @@ const MyConncetion = () => {
     );
 
   return (
-    <div className="my-10 max-w-7xl mx-auto px-4 py-16">
+    <div className="my-10 min-h-screen max-w-7xl mx-auto px-4 py-16">
       <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8">
         My Connections
       </h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-          <thead className="bg-gray-100 hidden md:table-header-group">
+          <thead className="bg-primary hidden md:table-header-group">
             <tr>
               <th className="py-3 px-6 text-left">Profile</th>
               <th className="py-3 px-6 text-left">Name</th>
