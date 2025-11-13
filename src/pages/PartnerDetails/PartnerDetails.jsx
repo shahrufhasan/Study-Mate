@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import {
   Star,
   GraduationCap,
@@ -13,9 +13,8 @@ import Swal from "sweetalert2";
 
 const PartnerDetails = () => {
   const data = useLoaderData();
-  const partner = data.result;
-  const navigate = useNavigate();
 
+  const [partner, setPartner] = useState(data.result);
   const {
     _id,
     name,
@@ -26,11 +25,10 @@ const PartnerDetails = () => {
     availabiityTime,
     experienceLevel,
     location,
-    partnerCont: initialPartnerCont = 0,
   } = partner;
 
   const [partnerCont, setPartnerCont] = useState(
-    Number(initialPartnerCont) || 0
+    Number(partner.partnerCont) || 0
   );
 
   const badgeColor =
@@ -51,7 +49,14 @@ const PartnerDetails = () => {
   const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
 
   const handleSendRequest = () => {
-    fetch(`http://localhost:3000/partners/${partner._id}/increment`, {
+    if (!_id)
+      return Swal.fire({
+        title: "Error!",
+        text: "Partner ID missing",
+        icon: "error",
+      });
+
+    fetch(`http://localhost:3000/partners/${_id}/increment`, {
       method: "PATCH",
     })
       .then((res) => res.json())
@@ -66,6 +71,12 @@ const PartnerDetails = () => {
             timer: 1500,
             showConfirmButton: false,
           });
+
+          // Optional: update partner state if backend returns new partnerCont
+          setPartner((prev) => ({
+            ...prev,
+            partnerCont: prev.partnerCont + 1,
+          }));
         } else {
           Swal.fire({
             title: "Error!",
@@ -81,48 +92,6 @@ const PartnerDetails = () => {
           icon: "error",
         });
       });
-  };
-
-  const handleDelete = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won’t be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:3000/partners/${_id}`, { method: "DELETE" })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Partner has been deleted successfully.",
-                icon: "success",
-                timer: 1500,
-                showConfirmButton: false,
-              });
-              navigate("/findPartners");
-            } else {
-              Swal.fire({
-                title: "Error!",
-                text: "Failed to delete partner.",
-                icon: "error",
-              });
-            }
-          })
-          .catch(() => {
-            Swal.fire({
-              title: "Error!",
-              text: "Something went wrong.",
-              icon: "error",
-            });
-          });
-      }
-    });
   };
 
   return (
@@ -172,20 +141,6 @@ const PartnerDetails = () => {
               className="btn btn-outline btn-secondary w-full"
             >
               Send Request
-            </button>
-
-            <Link
-              to={`/updatePartner/${_id}`}
-              className="btn btn-outline btn-primary w-full"
-            >
-              Update Info
-            </Link>
-
-            <button
-              onClick={handleDelete}
-              className="btn btn-outline btn-secondary w-full"
-            >
-              Delete Partner
             </button>
           </div>
         </div>

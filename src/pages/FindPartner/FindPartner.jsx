@@ -12,8 +12,8 @@ const FindPartner = () => {
       partner.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
-      if (sortOrder === "asc") return b.rating - a.rating;
-      if (sortOrder === "desc") return a.rating - b.rating;
+      if (sortOrder === "asc") return a.rating - b.rating;
+      if (sortOrder === "desc") return b.rating - a.rating;
       return 0;
     });
 

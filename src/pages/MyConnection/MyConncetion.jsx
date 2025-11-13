@@ -102,7 +102,8 @@ const MyConncetion = () => {
                 return (
                   <tr
                     key={conn._id}
-                    className="border-t border-gray-200 md:border-none block md:table-row mb-4 md:mb-0"
+                    className="border border-gray-300 rounded-lg block
+                     md:table-row mb-4 md:mb-0 hover:bg-emerald-50 transition-all duration-300"
                   >
                     <td className="py-3 px-6 md:table-cell block">
                       <div className="flex md:block items-center gap-2">

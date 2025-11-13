@@ -2,9 +2,11 @@ import React, { use, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
+import { useNavigate } from "react-router";
 
 const CreatePartnerProfile = () => {
   const { user } = use(AuthContext);
+  const navigate = useNavigate();
   const [partnerData, setPartnerData] = useState({
     name: "",
     profileImage: "",
@@ -37,33 +39,30 @@ const CreatePartnerProfile = () => {
       body: JSON.stringify(partnerData),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        if (data.success) {
+          const createdPartnerId = data.result.insertedId; // <-- get the _id
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Partner Created Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate(`/partnerDetails/${createdPartnerId}`);
+        }
+      })
       .catch((err) => {
         console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-
-    setTimeout(() => {
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Partner Created Successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      setPartnerData({
-        name: "",
-        profileImage: "",
-        subject: "",
-        studyMode: "online",
-        availabiityTime: "",
-        location: "",
-        experienceLevel: "Beginner",
-        rating: 0,
-        partnerCont: 0,
-        email: "",
-      });
-      setLoading(false);
-    }, 1000);
   };
 
   return (
