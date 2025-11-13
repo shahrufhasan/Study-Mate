@@ -1,16 +1,52 @@
-# React + Vite
+# 🎓 StudyMate — Find Your Perfect Study Partner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StudyMate is an interactive platform designed to help students connect with compatible study partners based on their subjects, interests, and learning styles. It provides a smooth and personalized experience to manage study connections, profiles, and learning sessions.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Features
 
-## React Compiler
+- 🔍 **Find Study Partners Easily:**  
+  Browse and filter partners by subject, study mode (online/offline), experience level, and availability.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 💬 **Connect & Collaborate:**  
+  Send requests to connect with other learners and build your personal study network.
 
-## Expanding the ESLint configuration
+- 📊 **Profile Management:**  
+  Create, update, or delete your study partner profile directly from your dashboard.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🌐 **Dynamic Partner Details:**  
+  View complete partner details, including ratings, study mode, and location — all fetched from the backend API.
+
+- 🔐 **Secure Access with Private Routes:**  
+  Sensitive pages like My Profile, My Connections, and Partner Details are protected for logged-in users only.
+
+---
+
+## 🧠 Tech Stack
+
+### 🖥️ **Client Side**
+
+- React (with React Router)
+- SweetAlert2 for notifications
+- Lucide-React icons
+- TailwindCSS for styling
+- Netlify for deployment
+
+### ⚙️ **Server Side**
+
+- Node.js with Express.js
+- MongoDB with Mongoose Driver
+- CORS and dotenv for secure configuration
+- Hosted on Render or Vercel
+
+---
+
+## ⚡ Installation & Setup
+
+### Clone both client and server:
+
+```bash
+git clone https://github.com/shahrufhasan/Study-Mate-Client.git
+git clone https://github.com/shahrufhasan/Study-Mate-Server.git
+```
