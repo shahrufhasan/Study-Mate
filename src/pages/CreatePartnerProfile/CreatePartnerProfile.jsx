@@ -41,7 +41,7 @@ const CreatePartnerProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          const createdPartnerId = data.result.insertedId; // <-- get the _id
+          const createdPartnerId = data.result.insertedId;
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -59,9 +59,6 @@ const CreatePartnerProfile = () => {
           title: "Oops...",
           text: "Something went wrong!",
         });
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 

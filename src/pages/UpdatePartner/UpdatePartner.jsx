@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 const UpdatePartner = () => {
   const data = useLoaderData();
-  const partner = data.result || {};
+  const partner = data.result;
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -62,12 +62,11 @@ const UpdatePartner = () => {
           title: "Update Failed",
           text: "Something went wrong while updating partner.",
         });
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   return (
-    <div className="flex justify-center min-h-screen items-center bg-gray-100 p-4">
+    <div className="flex justify-center min-h-screen items-center  p-4">
       <div className="card bg-base-100 w-full max-w-lg shadow-2xl py-5 space-y-3">
         <div className="text-center">
           <h4 className="font-semibold text-4xl mb-4">Update Study Partner</h4>

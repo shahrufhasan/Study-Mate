@@ -23,7 +23,10 @@ export const router = createBrowserRouter([
         loader: () => fetch("http://localhost:3000/latest-partners"),
         element: <Home></Home>,
       },
-
+      {
+        path: "/about",
+        element: <About></About>,
+      },
       {
         path: "/findPartners",
         loader: () => fetch("http://localhost:3000/partners"),
@@ -40,8 +43,6 @@ export const router = createBrowserRouter([
 
       {
         path: "/my-conncetion",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>
@@ -58,9 +59,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/partnerdetails/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
-            <PartnerDetails />
+            <PartnerDetails></PartnerDetails>
           </PrivateRoute>
         ),
       },

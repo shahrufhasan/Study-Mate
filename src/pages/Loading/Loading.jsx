@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader2 } from "lucide-react"; // from lucide-react (already in your project)
+import { Loader2 } from "lucide-react";
 
 const Loading = ({ message = "Loading..." }) => {
   return (

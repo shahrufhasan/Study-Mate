@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router";
-import { getAuth } from "firebase/auth";
+import React, { useState, use } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import {
   Star,
   GraduationCap,
@@ -11,97 +10,30 @@ import {
   Laptop,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../provider/AuthContext";
 
 const PartnerDetails = () => {
-  const { id } = useParams();
-  const [partner, setPartner] = useState(null);
-  const [partnerCont, setPartnerCont] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchPartner = async () => {
-      try {
-        const auth = getAuth();
-        const token = auth.currentUser
-          ? await auth.currentUser.getIdToken()
-          : null;
-
-        const res = await fetch(`http://localhost:3000/partners/${id}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-
-        const data = await res.json();
-        if (data.success && data.result) {
-          setPartner(data.result);
-          setPartnerCont(Number(data.result.partnerCont) || 0);
-        } else setError("Failed to fetch partner details.");
-      } catch {
-        setError("Something went wrong while fetching partner data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPartner();
-  }, [id]);
-
-  const handleSendRequest = async () => {
-    if (!partner?._id)
-      return Swal.fire("Error!", "Partner ID missing", "error");
-
-    try {
-      const auth = getAuth();
-      const token = auth.currentUser
-        ? await auth.currentUser.getIdToken()
-        : null;
-
-      const res = await fetch(
-        `http://localhost:3000/partners/${partner._id}/connect`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-          body: JSON.stringify({ userEmail: auth.currentUser?.email }),
-        }
-      );
-
-      const data = await res.json();
-      if (data.success) {
-        setPartnerCont((prev) => prev + 1);
-        Swal.fire("Request Sent!", "Connection count increased.", "success");
-      } else throw new Error();
-    } catch {
-      Swal.fire("Error!", "Failed to increase connection count.", "error");
-    }
-  };
-
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen text-gray-600">
-        Loading...
-      </div>
-    );
-
-  if (error || !partner)
-    return (
-      <div className="flex justify-center items-center h-screen text-red-500">
-        {error || "Partner not found."}
-      </div>
-    );
+  const data = useLoaderData();
+  const partner = data.result;
+  const navigate = useNavigate();
+  const { user } = use(AuthContext);
 
   const {
+    _id,
     name,
     profileImage,
     rating = 0,
     subject,
     studyMode,
-    availabiityTime,
+    availabilityTime,
     experienceLevel,
     location,
+    partnerCont: initialPartnerCont = 0,
   } = partner;
+
+  const [partnerCont, setPartnerCont] = useState(
+    Number(initialPartnerCont) || 0
+  );
 
   const badgeColor =
     experienceLevel === "Expert"
@@ -110,14 +42,92 @@ const PartnerDetails = () => {
       ? "bg-yellow-300"
       : "bg-red-300";
 
-  const StudyModeIcon = () =>
-    studyMode?.toLowerCase() === "online" ? (
-      <Wifi className="text-blue-500" size={16} />
-    ) : studyMode?.toLowerCase() === "offline" ? (
-      <Laptop className="text-gray-600" size={16} />
-    ) : (
-      <Monitor className="text-blue-500" size={16} />
-    );
+  const StudyModeIcon = () => {
+    if (studyMode.toLowerCase() === "online")
+      return <Wifi className="text-blue-500" size={16} />;
+    if (studyMode.toLowerCase() === "offline")
+      return <Laptop className="text-gray-600" size={16} />;
+    return <Monitor className="text-blue-500" size={16} />;
+  };
+
+  const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
+
+  const handleSendRequest = (_id) => {
+    if (!user?.email) {
+      Swal.fire("Error", "You must be logged in to send a request.", "error");
+      return;
+    }
+
+    fetch(`http://localhost:3000/partners/${_id}/increment`, {
+      method: "PATCH",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setPartnerCont((prev) => prev + 1);
+
+          const storedConnections = JSON.parse(
+            localStorage.getItem("myConnections") || "[]"
+          );
+          const exists = storedConnections.find((p) => p._id === _id);
+          if (!exists) {
+            localStorage.setItem(
+              "myConnections",
+              JSON.stringify([...storedConnections, partner])
+            );
+          }
+
+          Swal.fire({
+            title: "Request Sent!",
+            text: "Partner added to your connections.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false,
+          }).then(() => {
+            navigate("/my-conncetion");
+          });
+        } else {
+          Swal.fire("Error!", "Failed to send request.", "error");
+        }
+      })
+      .catch(() => {
+        Swal.fire("Error!", "Something went wrong.", "error");
+      });
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/partners/${_id}`, { method: "DELETE" })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Partner has been deleted successfully.",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false,
+              });
+              navigate("/findPartners");
+            } else {
+              Swal.fire("Error!", "Failed to delete partner.", "error");
+            }
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
@@ -137,6 +147,7 @@ const PartnerDetails = () => {
 
         <div className="p-6 flex flex-col gap-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800">{name}</h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-600 text-left">
             <div className="flex items-center gap-2">
               <GraduationCap className="text-purple-600" size={18} /> {subject}
@@ -148,10 +159,10 @@ const PartnerDetails = () => {
               <MapPin className="text-red-500" size={18} /> {location}
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="text-blue-600" size={18} /> {availabiityTime}
+              <Clock className="text-blue-600" size={18} /> {availabilityTime}
             </div>
             <div className="flex items-center gap-2">
-              <Star className="text-yellow-400" size={18} /> {rating} / 5
+              <Star className="text-yellow-400" size={18} /> {numericRating} / 5
             </div>
             <div className="flex items-center gap-2">
               <Star className="text-gray-400" size={18} /> Connections:{" "}
@@ -161,17 +172,25 @@ const PartnerDetails = () => {
 
           <div className="mt-4 flex flex-col gap-3">
             <button
-              onClick={handleSendRequest}
+              onClick={() => handleSendRequest(_id)}
               className="btn btn-outline btn-secondary w-full"
             >
               Send Request
             </button>
+
             <Link
-              to="/findPartners"
+              to={`/updatePartner/${_id}`}
               className="btn btn-outline btn-primary w-full"
             >
-              Back To All Partners
+              Update Info
             </Link>
+
+            <button
+              onClick={handleDelete}
+              className="btn btn-outline btn-secondary w-full"
+            >
+              Delete Partner
+            </button>
           </div>
         </div>
       </div>

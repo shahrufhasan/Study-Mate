@@ -19,7 +19,6 @@ const About = () => {
         </p>
       </div>
 
-      {/* Mission & Features Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl">
         {/* Card 1 */}
         <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
@@ -30,7 +29,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* Card 2 */}
+
         <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <BookOpen className="text-blue-600 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">Learn & Collaborate</h3>
@@ -40,7 +39,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* Card 3 */}
+      
         <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <HeartHandshake className="text-pink-500 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">
@@ -52,7 +51,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* Card 4 */}
+  
         <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-xl transition">
           <Globe className="text-green-600 w-10 h-10 mb-3" />
           <h3 className="text-lg font-semibold mb-2">Study Anywhere</h3>
@@ -63,7 +62,7 @@ const About = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
+   
       <div className="mt-16 text-center max-w-3xl">
         <h2 className="text-3xl font-bold mb-4 text-gray-800">
           Join Our Learning Community
