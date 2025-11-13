@@ -13,6 +13,7 @@ import MyProfile from "../pages/MyProfile/MyProfile";
 import TopRatedPartner from "../pages/TopRatedPartner/TopRatedPartner";
 import About from "../pages/About/About";
 import Error from "../pages/Error/Error";
+import axios from "axios";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +23,12 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        loader: () => fetch("http://localhost:3000/latest-partners"),
+        loader: async () => {
+          const response = await axios.get(
+            "http://localhost:3000/latest-partners"
+          );
+          return response.data;
+        },
         element: <Home></Home>,
       },
       {
@@ -31,18 +37,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "/findPartners",
-        loader: () => fetch("http://localhost:3000/partners"),
+        loader: async () => {
+          const response = await axios.get("http://localhost:3000/partners");
+          return response.data;
+        },
         element: <FindPartner></FindPartner>,
       },
       {
         path: "/createProfile",
         element: (
           <PrivateRoute>
-            <CreatePartnerProfile></CreatePartnerProfile>,
+            <CreatePartnerProfile></CreatePartnerProfile>
           </PrivateRoute>
         ),
       },
-
       {
         path: "/my-conncetion",
         element: (
@@ -61,8 +69,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/partnerdetails/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/partners/${params.id}`),
+        loader: async ({ params }) => {
+          const response = await axios.get(
+            `http://localhost:3000/partners/${params.id}`
+          );
+          return response.data;
+        },
         element: (
           <PrivateRoute>
             <PartnerDetails></PartnerDetails>
@@ -71,8 +83,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/updatePartner/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/partners/${params.id}`),
+        loader: async ({ params }) => {
+          const response = await axios.get(
+            `http://localhost:3000/partners/${params.id}`
+          );
+          return response.data;
+        },
         element: (
           <PrivateRoute>
             <UpdatePartner></UpdatePartner>

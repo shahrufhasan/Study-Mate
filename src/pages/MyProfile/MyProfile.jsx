@@ -91,8 +91,8 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
-      <div className="card bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden text-center">
+    <div className="min-h-screen flex justify-center items-center  p-4">
+      <div className="card rounded-2xl shadow-xl w-full max-w-md overflow-hidden text-center">
         <div className="relative">
           <img
             src={

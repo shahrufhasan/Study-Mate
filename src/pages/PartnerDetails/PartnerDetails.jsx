@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
+import axios from "axios";
 
 const PartnerDetails = () => {
   const data = useLoaderData();
@@ -52,47 +53,34 @@ const PartnerDetails = () => {
 
   const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
 
-  const handleSendRequest = (_id) => {
+  const handleSendRequest = async () => {
     if (!user?.email) {
       Swal.fire("Error", "You must be logged in to send a request.", "error");
       return;
     }
 
-    fetch(`http://localhost:3000/partners/${_id}/increment`, {
-      method: "PATCH",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setPartnerCont((prev) => prev + 1);
+    try {
+      await axios.patch(`http://localhost:3000/partners/${_id}/increment`);
 
-          const storedConnections = JSON.parse(
-            localStorage.getItem("myConnections") || "[]"
-          );
-          const exists = storedConnections.find((p) => p._id === _id);
-          if (!exists) {
-            localStorage.setItem(
-              "myConnections",
-              JSON.stringify([...storedConnections, partner])
-            );
-          }
-
-          Swal.fire({
-            title: "Request Sent!",
-            text: "Partner added to your connections.",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false,
-          }).then(() => {
-            navigate("/my-conncetion");
-          });
-        } else {
-          Swal.fire("Error!", "Failed to send request.", "error");
-        }
-      })
-      .catch(() => {
-        Swal.fire("Error!", "Something went wrong.", "error");
+      await axios.post("http://localhost:3000/myConnections", {
+        userEmail: user.email,
+        partnerId: _id,
       });
+
+      setPartnerCont((prev) => prev + 1);
+
+      Swal.fire({
+        title: "Request Sent!",
+        text: "Partner added to your connections.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        navigate("/my-conncetion");
+      });
+    } catch (error) {
+      Swal.fire(error);
+    }
   };
 
   return (
@@ -138,7 +126,8 @@ const PartnerDetails = () => {
 
           <div className="mt-4 flex flex-col gap-3">
             <button
-              onClick={() => handleSendRequest(_id)}
+              type="button"
+              onClick={handleSendRequest}
               className="btn btn-outline btn-secondary w-full"
             >
               Send Request

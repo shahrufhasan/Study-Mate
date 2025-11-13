@@ -1,8 +1,9 @@
-import React, { use, useState } from "react";
+import React, { useState, use } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 const CreatePartnerProfile = () => {
   const { user } = use(AuthContext);
@@ -27,39 +28,34 @@ const CreatePartnerProfile = () => {
     setPartnerData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    fetch("http://localhost:3000/partners", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(partnerData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          const createdPartnerId = data.result.insertedId;
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Partner Created Successfully",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate(`/partnerDetails/${createdPartnerId}`);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/partners",
+        partnerData
+      );
+      if (response.data.success) {
+        const createdPartnerId = response.data.result.insertedId;
         Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
+          position: "top-end",
+          icon: "success",
+          title: "Partner Created Successfully",
+          showConfirmButton: false,
+          timer: 1500,
         });
+        navigate(`/partnerDetails/${createdPartnerId}`);
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err.code,
       });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,7 +78,6 @@ const CreatePartnerProfile = () => {
             className="input w-full"
             required
           />
-
           <input
             type="url"
             name="profileImage"
@@ -91,7 +86,6 @@ const CreatePartnerProfile = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <input
             type="text"
             name="subject"
@@ -100,7 +94,6 @@ const CreatePartnerProfile = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <select
             name="studyMode"
             value={partnerData.studyMode}
@@ -110,7 +103,6 @@ const CreatePartnerProfile = () => {
             <option value="online">Online</option>
             <option value="offline">Offline</option>
           </select>
-
           <input
             type="text"
             name="availabiityTime"
@@ -119,7 +111,6 @@ const CreatePartnerProfile = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <input
             type="text"
             name="location"
@@ -128,7 +119,6 @@ const CreatePartnerProfile = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <select
             name="experienceLevel"
             value={partnerData.experienceLevel}
@@ -139,7 +129,6 @@ const CreatePartnerProfile = () => {
             <option value="Intermediate">Intermediate</option>
             <option value="Expert">Expert</option>
           </select>
-
           <input
             type="number"
             name="rating"
@@ -150,7 +139,6 @@ const CreatePartnerProfile = () => {
             max={5}
             className="input w-full"
           />
-
           <input
             type="number"
             name="partnerCont"
@@ -160,7 +148,6 @@ const CreatePartnerProfile = () => {
             min={0}
             className="input w-full"
           />
-
           <input
             type="email"
             name="email"
@@ -168,7 +155,6 @@ const CreatePartnerProfile = () => {
             readOnly
             className="input w-full"
           />
-
           <button
             type="submit"
             className="btn btn-primary w-full mt-3"

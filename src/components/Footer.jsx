@@ -1,78 +1,85 @@
 import React from "react";
 import logo from "/logo.png";
-import {
-  FaFacebook,
-  FaLinkedin,
-  FaInstagram,
-  FaXTwitter, // The X (Twitter) icon from react-icons
-} from "react-icons/fa6"; // use fa6 for the updated X icon
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { SiX } from "react-icons/si";
 
 const Footer = () => {
   return (
-    <footer className="bg-base-200 text-base-content mt-10 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <div className="flex items-center gap-3 mb-3">
-            <img src={logo} alt="StudyMate Logo" className="w-10 h-10" />
-            <h2 className="text-2xl font-bold text-primary">StudyMate</h2>
+    <footer className="bg-base-200 text-base-content py-10">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch justify-items-center">
+          <div className="flex flex-col justify-start h-full items-center md:items-start text-center md:text-left gap-4">
+            <img src={logo} className="w-40 mb-2" alt="StudyMate Logo" />
+            <p className="text-sm">
+              StudyMate is an online platform designed to help students connect,
+              collaborate, and excel in their studies. It offers tools for
+              sharing notes, joining study groups, and accessing learning
+              resources, making learning more interactive, organized, and fun.
+            </p>
           </div>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            StudyMate helps students and learners find compatible study
-            partners, collaborate effectively, and grow together through shared
-            learning experiences.
-          </p>
-        </div>
 
-        <div className="flex flex-col items-center">
-          <h3 className="font-semibold text-lg mb-3">Connect with us</h3>
-          <div className="flex gap-4 text-xl">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 transition"
-            >
-              <FaFacebook />
-            </a>
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-800 hover:text-black transition"
-            >
-              <FaXTwitter />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-700 hover:text-blue-900 transition"
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-pink-500 hover:text-pink-700 transition"
-            >
-              <FaInstagram />
-            </a>
+          <div className="flex flex-col justify-start h-full items-center md:items-start text-center md:text-left gap-2">
+            <h4 className="text-lg font-semibold mb-2">Quick Links</h4>
+            <ul className="flex flex-col gap-1 text-sm">
+              <li className="link link-hover cursor-pointer">Home</li>
+              <li className="link link-hover cursor-pointer">Find Partner</li>
+              <li className="link link-hover cursor-pointer">Create Profile</li>
+              <li className="link link-hover cursor-pointer">My Connection</li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col justify-start h-full items-center md:items-start text-center md:text-left gap-2">
+            <h4 className="text-lg font-semibold mb-2">Follow Us</h4>
+            <div className="flex flex-col gap-2 mt-2">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+              >
+                <FaFacebook className="text-2xl" /> Facebook
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-pink-500 transition-colors"
+              >
+                <FaInstagram className="text-2xl" /> Instagram
+              </a>
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-black transition-colors"
+              >
+                <SiX className="text-2xl" /> X
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-blue-700 transition-colors"
+              >
+                <FaLinkedin className="text-2xl" /> LinkedIn
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-red-600 transition-colors"
+              >
+                <FaYoutube className="text-2xl" /> YouTube
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col items-center md:items-end">
-          <h3 className="font-semibold text-lg mb-3">Stay Updated</h3>
-          <p className="text-gray-600 text-sm mb-2 text-center md:text-right">
-            Get the latest updates, study tips, and partner recommendations.
-          </p>
-          <button className="btn btn-primary btn-sm mt-2">Subscribe Now</button>
-        </div>
-      </div>
+        <hr className="my-6 border-t border-gray-300" />
 
-      <div className="border-t border-gray-300 py-4 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()}{" "}
-        <span className="font-semibold">StudyMate</span>. All rights reserved.
+        <div className="text-center text-sm text-gray-500">
+          © {new Date().getFullYear()} StudyMate. All rights reserved.
+        </div>
       </div>
     </footer>
   );

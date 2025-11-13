@@ -1,47 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { AuthContext } from "../../provider/AuthContext";
 
-const MyConncetion = () => {
+const MyConnection = () => {
+  const { user } = use(AuthContext);
   const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedConnections = JSON.parse(localStorage.getItem("myConnections"));
-    setConnections(storedConnections);
-    setLoading(false);
-  }, []);
+    const fetchConnections = async () => {
+      if (!user?.email) {
+        setConnections([]);
+        setLoading(false);
+        return;
+      }
 
-  const handleDelete = (id) => {
-    Swal.fire({
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/myConnections?userEmail=${user.email}`
+        );
+        setConnections(response.data);
+      } catch (error) {
+        console.error("Error fetching connections:", error);
+        Swal.fire("Error!", "Failed to load connections.", "error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConnections();
+  }, [user]);
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
-      text: "This will delete the partner from the database!",
+      text: "This will delete the partner from your connections!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:3000/partners/${id}`, { method: "DELETE" })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              setConnections((prev) => prev.filter((conn) => conn._id !== id));
-              const updated = JSON.parse(
-                localStorage.getItem("myConnections") || "[]"
-              ).filter((conn) => conn._id !== id);
-              localStorage.setItem("myConnections", JSON.stringify(updated));
-              Swal.fire("Deleted!", "Partner has been deleted.", "success");
-            } else {
-              Swal.fire("Error!", "Failed to delete partner.", "error");
-            }
-          })
-          .catch(() => {
-            Swal.fire("Error!", "Something went wrong.", "error");
-          });
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(
+          `http://localhost:3000/myConnections/${id}?userEmail=${user.email}`
+        );
+        setConnections((prev) => prev.filter((conn) => conn._id !== id));
+        Swal.fire("Deleted!", "Partner has been removed.", "success");
+      } catch (error) {
+        console.error("Delete error:", error);
+        Swal.fire("Error!", "Something went wrong.", "error");
+      }
+    }
   };
 
   if (loading)
@@ -115,6 +129,7 @@ const MyConncetion = () => {
                       Update Info
                     </Link>
                     <button
+                      type="button"
                       onClick={() => handleDelete(conn._id)}
                       className="btn btn-outline btn-secondary w-full"
                     >
@@ -131,4 +146,4 @@ const MyConncetion = () => {
   );
 };
 
-export default MyConncetion;
+export default MyConnection;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const UpdatePartner = () => {
   const data = useLoaderData();
@@ -27,42 +28,39 @@ const UpdatePartner = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    fetch(`http://localhost:3000/partners/${partner._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Partner Updated Successfully",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate(`/partnerdetails/${partner._id}`);
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Update Failed",
-            text: "Something went wrong while updating partner.",
-          });
-        }
-      })
-      .catch((err) => {
-        console.error("Error updating partner:", err);
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/partners/${partner._id}`,
+        formData
+      );
+      if (response.data.success) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Partner Updated Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(`/partnerdetails/${partner._id}`);
+      } else {
         Swal.fire({
           icon: "error",
           title: "Update Failed",
           text: "Something went wrong while updating partner.",
         });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: err.code,
       });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,7 +82,6 @@ const UpdatePartner = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <input
             type="url"
             name="profileImage"
@@ -93,7 +90,6 @@ const UpdatePartner = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <input
             type="text"
             name="subject"
@@ -102,7 +98,6 @@ const UpdatePartner = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <select
             name="studyMode"
             value={formData.studyMode}
@@ -112,7 +107,6 @@ const UpdatePartner = () => {
             <option value="online">Online</option>
             <option value="offline">Offline</option>
           </select>
-
           <input
             type="text"
             name="availabiityTime"
@@ -121,7 +115,6 @@ const UpdatePartner = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <input
             type="text"
             name="location"
@@ -130,7 +123,6 @@ const UpdatePartner = () => {
             onChange={handleChange}
             className="input w-full"
           />
-
           <select
             name="experienceLevel"
             value={formData.experienceLevel}
@@ -141,7 +133,6 @@ const UpdatePartner = () => {
             <option value="Intermediate">Intermediate</option>
             <option value="Expert">Expert</option>
           </select>
-
           <input
             type="number"
             name="rating"
@@ -152,7 +143,6 @@ const UpdatePartner = () => {
             max={5}
             className="input w-full"
           />
-
           <input
             type="number"
             name="partnerCont"
@@ -162,7 +152,6 @@ const UpdatePartner = () => {
             min={0}
             className="input w-full"
           />
-
           <input
             type="email"
             name="email"
@@ -170,7 +159,6 @@ const UpdatePartner = () => {
             readOnly
             className="input w-full"
           />
-
           <button
             type="submit"
             className="btn btn-primary w-full mt-3"
