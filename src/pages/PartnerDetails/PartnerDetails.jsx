@@ -142,6 +142,12 @@ const PartnerDetails = () => {
             >
               Send Request
             </button>
+            <Link
+              to={`/updatePartner/${_id}`}
+              className="btn btn-outline btn-primary w-full"
+            >
+              Update Info
+            </Link>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ const testimonials = [
   {
     id: 1,
     name: "Aisha Rahman",
-    image: "https://i.ibb.co/mSyH9Cn/portrait1.jpg",
+    image: "https://i.ibb.co/7xRD8xnD/2149455861.jpg",
     review:
       "StudyMate helped me find an amazing study partner! We’ve been preparing for our exams together and my productivity has skyrocketed.",
     rating: 5,
@@ -14,7 +14,7 @@ const testimonials = [
   {
     id: 2,
     name: "Daniel Kim",
-    image: "https://i.ibb.co/5WFK5Vd/portrait2.jpg",
+    image: "https://i.ibb.co/M5CS4qJ0/13655.jpg",
     review:
       "The platform is super easy to use, and I found a study buddy within a day. We meet online and review Chemistry topics weekly.",
     rating: 4,
@@ -23,7 +23,7 @@ const testimonials = [
   {
     id: 3,
     name: "Sophia Patel",
-    image: "https://i.ibb.co/rv0ZjCs/portrait3.jpg",
+    image: "https://i.ibb.co/CKnHC0Kp/2149186122.jpg",
     review:
       "I love how StudyMate connects you with learners who share your goals. It’s like having a friend who keeps you accountable and motivated!",
     rating: 5,
@@ -33,17 +33,17 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="bg-gray-50 py-16 px-6">
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <h2 className="text-4xl font-bold text-primary mb-4">
+    <div className="flex flex-col items-center justify-center py-20 px-6">
+      <div className="flex justify-center items-center gap-3 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-primary">
           What Our Users Say
-        </h2>
-        <p className="text-gray-600 text-lg">
-          Hear from real students and learners who found their perfect study
-          partners on{" "}
-          <span className="font-semibold text-primary">StudyMate</span>.
-        </p>
+        </h1>
       </div>
+      <p className="text-gray-600 text-lg leading-relaxed mb-8">
+        Hear from real students and learners who found their perfect study
+        partners on{" "}
+        <span className="font-semibold text-primary">StudyMate</span>.
+      </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {testimonials.map((t) => (
@@ -54,7 +54,7 @@ const Testimonials = () => {
             <img
               src={t.image}
               alt={t.name}
-              className="w-20 h-20 rounded-full object-cover mb-4 border-4 border-primary/20"
+              className="w-35 h-35 rounded-full object-cover mb-4 border-4 border-primary/20"
             />
             <h3 className="text-lg font-semibold text-gray-800">{t.name}</h3>
             <p className="text-sm text-gray-500 mb-3">{t.subject} Learner</p>
@@ -81,7 +81,7 @@ const Testimonials = () => {
         </p>
         <button className="btn btn-primary px-6">Share Your Review</button>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import { Users, BookOpen, HeartHandshake, Globe } from "lucide-react";
 
 const About = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-16 px-6">
+    <div className="flex flex-col items-center justify-center py-20 px-6">
       <div className="max-w-4xl text-center mb-12">
         <div className="flex justify-center items-center gap-3 mb-4">
           <h1 className="text-4xl md:text-5xl font-bold text-primary">
