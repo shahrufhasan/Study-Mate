@@ -106,7 +106,7 @@ const UpdatePartner = () => {
     return <div className="text-center mt-20 text-red-500">{error}</div>;
 
   return (
-    <div className="flex justify-center min-h-screen items-center bg-gray-100 p-4">
+    <div className="flex justify-center min-h-screen items-center p-4">
       <div className="card w-full max-w-lg shadow-2xl py-5 space-y-3">
         <h4 className="font-semibold text-4xl text-center mb-4">
           Update Partner

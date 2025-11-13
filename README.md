@@ -50,3 +50,10 @@ StudyMate is an interactive platform designed to help students connect with comp
 git clone https://github.com/shahrufhasan/Study-Mate-Client.git
 git clone https://github.com/shahrufhasan/Study-Mate-Server.git
 ```
+
+
+
+client-side GitHub repository link: https://github.com/shahrufhasan/Study-Mate
+server-side GitHub repository link: https://github.com/shahrufhasan/Study-Mate-Server
+client-side live link: https://dainty-heliotrope-2412ef.netlify.app/
+server-side live link: https://study-mate-server-liard.vercel.app/

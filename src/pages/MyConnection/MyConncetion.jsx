@@ -60,7 +60,7 @@ const MyConnection = () => {
   };
 
   return (
-    <div className="my-10 max-w-7xl mx-auto px-4 py-16">
+    <div className="my-10 min-h-screen max-w-7xl mx-auto px-4 py-16">
       <div className="flex flex-col items-center gap-3 mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-primary">
           My Connections
@@ -83,14 +83,14 @@ const MyConnection = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <table className="min-w-full border border-gray-200 rounded-lg shadow-md">
             <thead className="bg-gray-100 hidden md:table-header-group">
               <tr>
-                <th className="py-3 px-6 text-left">Profile</th>
-                <th className="py-3 px-6 text-left">Name</th>
-                <th className="py-3 px-6 text-left">Subject</th>
-                <th className="py-3 px-6 text-left">Study Mode</th>
-                <th className="py-3 px-6 text-left">Actions</th>
+                <th className="py-3 px-6 text-left text-primary">Profile</th>
+                <th className="py-3 px-6 text-left text-primary">Name</th>
+                <th className="py-3 px-6 text-left text-primary">Subject</th>
+                <th className="py-3 px-6 text-left text-primary">Study Mode</th>
+                <th className="py-3 px-6 text-left text-primary">Actions</th>
               </tr>
             </thead>
             <tbody className="md:table-row-group">
@@ -112,15 +112,15 @@ const MyConnection = () => {
                       </span>
                     </div>
                   </td>
-                  <td className="py-3 px-6 text-gray-800 md:table-cell block">
+                  <td className="py-3 px-6 text-gray-500 md:table-cell block">
                     <span className="md:hidden font-semibold">Name: </span>
                     {conn.name}
                   </td>
-                  <td className="py-3 px-6 text-gray-600 md:table-cell block">
+                  <td className="py-3 px-6 text-gray-500 md:table-cell block">
                     <span className="md:hidden font-semibold">Subject: </span>
                     {conn.subject}
                   </td>
-                  <td className="py-3 px-6 text-gray-600 md:table-cell block">
+                  <td className="py-3 px-6 text-gray-500 md:table-cell block">
                     <span className="md:hidden font-semibold">Mode: </span>
                     {conn.studyMode}
                   </td>
