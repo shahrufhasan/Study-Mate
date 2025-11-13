@@ -33,7 +33,7 @@ const CreatePartnerProfile = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/partners",
+        "https://study-mate-server-liard.vercel.app/partners",
         partnerData
       );
       if (response.data.success) {

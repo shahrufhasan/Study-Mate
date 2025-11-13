@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
         path: "/",
         loader: async () => {
           const response = await axios.get(
-            "http://localhost:3000/latest-partners"
+            "https://study-mate-server-liard.vercel.app/latest-partners"
           );
           return response.data;
         },
@@ -38,7 +38,9 @@ export const router = createBrowserRouter([
       {
         path: "/findPartners",
         loader: async () => {
-          const response = await axios.get("http://localhost:3000/partners");
+          const response = await axios.get(
+            "https://study-mate-server-liard.vercel.app/partners"
+          );
           return response.data;
         },
         element: <FindPartner></FindPartner>,
@@ -53,6 +55,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/my-conncetion",
+        loader: async () => {
+          return null;
+        },
         element: (
           <PrivateRoute>
             <MyConncetion></MyConncetion>
@@ -71,7 +76,7 @@ export const router = createBrowserRouter([
         path: "/partnerdetails/:id",
         loader: async ({ params }) => {
           const response = await axios.get(
-            `http://localhost:3000/partners/${params.id}`
+            `https://study-mate-server-liard.vercel.app/partners/${params.id}`
           );
           return response.data;
         },
@@ -85,7 +90,7 @@ export const router = createBrowserRouter([
         path: "/updatePartner/:id",
         loader: async ({ params }) => {
           const response = await axios.get(
-            `http://localhost:3000/partners/${params.id}`
+            `https://study-mate-server-liard.vercel.app/partners/${params.id}`
           );
           return response.data;
         },

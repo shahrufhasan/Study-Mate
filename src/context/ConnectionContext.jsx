@@ -13,7 +13,7 @@ export const ConnectionProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/my-conncetion?email=${user.email}`
+        `https://study-mate-server-liard.vercel.app/my-conncetion?email=${user.email}`
       );
       const data = await res.json();
       if (data.success && Array.isArray(data.result)) {

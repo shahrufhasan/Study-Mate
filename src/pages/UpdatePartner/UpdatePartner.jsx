@@ -1,27 +1,61 @@
-import React, { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import axios from "axios";
 
 const UpdatePartner = () => {
-  const data = useLoaderData();
-  const partner = data.result;
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: partner.name || "",
-    profileImage: partner.profileImage || "",
-    subject: partner.subject || "",
-    studyMode: partner.studyMode || "online",
-    availabiityTime: partner.availabiityTime || "",
-    location: partner.location || "",
-    experienceLevel: partner.experienceLevel || "Beginner",
-    rating: partner.rating || 0,
-    partnerCont: partner.partnerCont || 0,
-    email: partner.email || "",
+    name: "",
+    profileImage: "",
+    subject: "",
+    studyMode: "online",
+    availabiityTime: "",
+    location: "",
+    experienceLevel: "Beginner",
+    rating: 0,
+    partnerCont: 0,
+    email: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPartner = async () => {
+      try {
+        const res = await fetch(
+          `https://study-mate-server-liard.vercel.app/partners/${id}`
+        );
+        const data = await res.json();
+
+        if (data.success && data.result) {
+          setFormData({
+            name: data.result.name || "",
+            profileImage: data.result.profileImage || "",
+            subject: data.result.subject || "",
+            studyMode: data.result.studyMode || "online",
+            availabiityTime: data.result.availabiityTime || "",
+            location: data.result.location || "",
+            experienceLevel: data.result.experienceLevel || "Beginner",
+            rating: data.result.rating || 0,
+            partnerCont: data.result.partnerCont || 0,
+            email: data.result.email || "",
+          });
+        } else {
+          setError("Failed to fetch partner details.");
+        }
+      } catch {
+        setError("Something went wrong while fetching partner details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPartner();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,52 +64,55 @@ const UpdatePartner = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setUpdating(true);
+
     try {
-      const response = await axios.put(
-        `http://localhost:3000/partners/${partner._id}`,
-        formData
+      const res = await fetch(
+        `https://study-mate-server-liard.vercel.app/partners/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
       );
-      if (response.data.success) {
+      const data = await res.json();
+
+      if (data.success) {
         Swal.fire({
-          position: "top-end",
           icon: "success",
           title: "Partner Updated Successfully",
-          showConfirmButton: false,
           timer: 1500,
+          showConfirmButton: false,
         });
-        navigate(`/partnerdetails/${partner._id}`);
+        navigate(`/partnerdetails/${id}`);
       } else {
         Swal.fire({
           icon: "error",
           title: "Update Failed",
-          text: "Something went wrong while updating partner.",
         });
       }
-    } catch (err) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "Update Failed",
-        text: err.code,
       });
     } finally {
-      setLoading(false);
+      setUpdating(false);
     }
   };
 
-  return (
-    <div className="flex justify-center  items-center  p-4">
-      <div className="card w-full max-w-lg shadow-2xl py-5 space-y-3">
-        <div className="text-center">
-          <h4 className="font-semibold text-4xl mb-4">Update Study Partner</h4>
-          <p className="text-primary text-sm">
-            Modify the details of your partner
-          </p>
-        </div>
+  if (loading) return <div className="text-center mt-20">Loading...</div>;
+  if (error)
+    return <div className="text-center mt-20 text-red-500">{error}</div>;
 
+  return (
+    <div className="flex justify-center min-h-screen items-center bg-gray-100 p-4">
+      <div className="card w-full max-w-lg shadow-2xl py-5 space-y-3">
+        <h4 className="font-semibold text-4xl text-center mb-4">
+          Update Partner
+        </h4>
         <form onSubmit={handleSubmit} className="card-body space-y-3">
           <input
-            type="text"
             name="name"
             placeholder="Name"
             value={formData.name}
@@ -83,7 +120,6 @@ const UpdatePartner = () => {
             className="input w-full"
           />
           <input
-            type="url"
             name="profileImage"
             placeholder="Profile Image URL"
             value={formData.profileImage}
@@ -91,7 +127,6 @@ const UpdatePartner = () => {
             className="input w-full"
           />
           <input
-            type="text"
             name="subject"
             placeholder="Subject"
             value={formData.subject}
@@ -108,7 +143,6 @@ const UpdatePartner = () => {
             <option value="offline">Offline</option>
           </select>
           <input
-            type="text"
             name="availabiityTime"
             placeholder="Availability Time"
             value={formData.availabiityTime}
@@ -116,7 +150,6 @@ const UpdatePartner = () => {
             className="input w-full"
           />
           <input
-            type="text"
             name="location"
             placeholder="Location"
             value={formData.location}
@@ -134,27 +167,27 @@ const UpdatePartner = () => {
             <option value="Expert">Expert</option>
           </select>
           <input
-            type="number"
             name="rating"
-            placeholder="Rating (0-5)"
-            value={formData.rating}
-            onChange={handleChange}
+            type="number"
             min={0}
             max={5}
+            placeholder="Rating"
+            value={formData.rating}
+            onChange={handleChange}
             className="input w-full"
           />
           <input
-            type="number"
             name="partnerCont"
+            type="number"
+            min={0}
             placeholder="Partner Count"
             value={formData.partnerCont}
             onChange={handleChange}
-            min={0}
             className="input w-full"
           />
           <input
-            type="email"
             name="email"
+            type="email"
             value={formData.email}
             readOnly
             className="input w-full"
@@ -162,9 +195,9 @@ const UpdatePartner = () => {
           <button
             type="submit"
             className="btn btn-primary w-full mt-3"
-            disabled={loading}
+            disabled={updating}
           >
-            {loading ? "Updating..." : "Update Partner"}
+            {updating ? "Updating..." : "Update Partner"}
           </button>
         </form>
       </div>

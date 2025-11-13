@@ -67,11 +67,10 @@ const PartnerCard = ({ partner }) => {
 
           <div className="flex justify-center items-center gap-4 text-sm text-gray-600 mb-3">
             <span className="flex items-center gap-1">
-              <StudyModeIcon />
-              {studyMode}
+              <StudyModeIcon /> {studyMode}
             </span>
             <span className="flex items-center gap-1">
-              <MapPin size={16} className="text-red-500" />
+              <MapPin size={16} className="text-red-500" />{" "}
               {location || "Unknown"}
             </span>
           </div>
