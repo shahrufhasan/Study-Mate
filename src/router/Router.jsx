@@ -58,11 +58,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/partnerdetails/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/partners/${params.id}`),
         element: (
           <PrivateRoute>
-            <PartnerDetails></PartnerDetails>
+            <PartnerDetails />
           </PrivateRoute>
         ),
       },

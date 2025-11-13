@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link, useLoaderData } from "react-router";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router";
+import { getAuth } from "firebase/auth";
 import {
   Star,
   GraduationCap,
@@ -12,9 +13,74 @@ import {
 import Swal from "sweetalert2";
 
 const PartnerDetails = () => {
-  const data = useLoaderData();
+  const { id } = useParams();
+  const [partner, setPartner] = useState(null);
+  const [partnerCont, setPartnerCont] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [partner, setPartner] = useState(data.result);
+  useEffect(() => {
+    const fetchPartner = async () => {
+      try {
+        const auth = getAuth();
+        const token = auth.currentUser
+          ? await auth.currentUser.getIdToken()
+          : null;
+
+        const res = await fetch(`http://localhost:3000/partners/${id}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        const data = await res.json();
+        if (data.success && data.result) {
+          setPartner(data.result);
+          setPartnerCont(Number(data.result.partnerCont) || 0);
+        } else setError("Failed to fetch partner details.");
+      } catch {
+        setError("Something went wrong while fetching partner data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPartner();
+  }, [id]);
+
+  const handleSendRequest = async () => {
+    if (!partner?._id)
+      return Swal.fire("Error!", "Partner ID missing", "error");
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/partners/${partner._id}/increment`,
+        {
+          method: "PATCH",
+        }
+      );
+      const data = await res.json();
+      if (data.success) {
+        setPartnerCont((prev) => prev + 1);
+        Swal.fire("Request Sent!", "Connection count increased.", "success");
+      } else throw new Error();
+    } catch {
+      Swal.fire("Error!", "Failed to increase connection count.", "error");
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-600">
+        Loading...
+      </div>
+    );
+
+  if (error || !partner)
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        {error || "Partner not found."}
+      </div>
+    );
+
   const {
     _id,
     name,
@@ -26,73 +92,20 @@ const PartnerDetails = () => {
     experienceLevel,
     location,
   } = partner;
-
-  const [partnerCont, setPartnerCont] = useState(
-    Number(partner.partnerCont) || 0
-  );
-
   const badgeColor =
     experienceLevel === "Expert"
       ? "bg-green-300"
       : experienceLevel === "Intermediate"
       ? "bg-yellow-300"
       : "bg-red-300";
-
-  const StudyModeIcon = () => {
-    if (studyMode.toLowerCase() === "online")
-      return <Wifi className="text-blue-500" size={16} />;
-    if (studyMode.toLowerCase() === "offline")
-      return <Laptop className="text-gray-600" size={16} />;
-    return <Monitor className="text-blue-500" size={16} />;
-  };
-
-  const numericRating = Math.max(0, Math.min(5, Number(rating) || 0));
-
-  const handleSendRequest = () => {
-    if (!_id)
-      return Swal.fire({
-        title: "Error!",
-        text: "Partner ID missing",
-        icon: "error",
-      });
-
-    fetch(`http://localhost:3000/partners/${_id}/increment`, {
-      method: "PATCH",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setPartnerCont((prev) => prev + 1);
-
-          Swal.fire({
-            title: "Request Sent!",
-            text: "Connection count increased successfully.",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false,
-          });
-
-          // Optional: update partner state if backend returns new partnerCont
-          setPartner((prev) => ({
-            ...prev,
-            partnerCont: prev.partnerCont + 1,
-          }));
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: "Failed to increase connection count.",
-            icon: "error",
-          });
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong.",
-          icon: "error",
-        });
-      });
-  };
+  const StudyModeIcon = () =>
+    studyMode?.toLowerCase() === "online" ? (
+      <Wifi className="text-blue-500" size={16} />
+    ) : studyMode?.toLowerCase() === "offline" ? (
+      <Laptop className="text-gray-600" size={16} />
+    ) : (
+      <Monitor className="text-blue-500" size={16} />
+    );
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-50 p-4">
@@ -112,7 +125,6 @@ const PartnerDetails = () => {
 
         <div className="p-6 flex flex-col gap-4 text-center">
           <h2 className="text-3xl font-bold text-gray-800">{name}</h2>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-600 text-left">
             <div className="flex items-center gap-2">
               <GraduationCap className="text-purple-600" size={18} /> {subject}
@@ -127,7 +139,7 @@ const PartnerDetails = () => {
               <Clock className="text-blue-600" size={18} /> {availabiityTime}
             </div>
             <div className="flex items-center gap-2">
-              <Star className="text-yellow-400" size={18} /> {numericRating} / 5
+              <Star className="text-yellow-400" size={18} /> {rating} / 5
             </div>
             <div className="flex items-center gap-2">
               <Star className="text-gray-400" size={18} /> Connections:{" "}
@@ -143,10 +155,10 @@ const PartnerDetails = () => {
               Send Request
             </button>
             <Link
-              to={`/updatePartner/${_id}`}
+              to="/findPartners"
               className="btn btn-outline btn-primary w-full"
             >
-              Update Info
+              Back To All Partners
             </Link>
           </div>
         </div>

@@ -34,17 +34,18 @@ const testimonials = [
 const Testimonials = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
-      <div className="flex justify-center items-center gap-3 mb-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-primary">
-          What Our Users Say
-        </h1>
+      <div className="max-w-4xl text-center mb-12">
+        <div className="flex justify-center items-center gap-3 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary">
+            What Our Users Say
+          </h1>
+        </div>
+        <p className="text-gray-600 text-lg leading-relaxed">
+          Hear from real students and learners who found their perfect study
+          partners on{" "}
+          <span className="font-semibold text-primary">StudyMate</span>.
+        </p>
       </div>
-      <p className="text-gray-600 text-lg leading-relaxed mb-8">
-        Hear from real students and learners who found their perfect study
-        partners on{" "}
-        <span className="font-semibold text-primary">StudyMate</span>.
-      </p>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {testimonials.map((t) => (
           <div
