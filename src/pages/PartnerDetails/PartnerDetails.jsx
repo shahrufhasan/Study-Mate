@@ -51,12 +51,23 @@ const PartnerDetails = () => {
       return Swal.fire("Error!", "Partner ID missing", "error");
 
     try {
+      const auth = getAuth();
+      const token = auth.currentUser
+        ? await auth.currentUser.getIdToken()
+        : null;
+
       const res = await fetch(
-        `http://localhost:3000/partners/${partner._id}/increment`,
+        `http://localhost:3000/partners/${partner._id}/connect`,
         {
           method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ userEmail: auth.currentUser?.email }),
         }
       );
+
       const data = await res.json();
       if (data.success) {
         setPartnerCont((prev) => prev + 1);
@@ -82,7 +93,6 @@ const PartnerDetails = () => {
     );
 
   const {
-    _id,
     name,
     profileImage,
     rating = 0,
@@ -92,12 +102,14 @@ const PartnerDetails = () => {
     experienceLevel,
     location,
   } = partner;
+
   const badgeColor =
     experienceLevel === "Expert"
       ? "bg-green-300"
       : experienceLevel === "Intermediate"
       ? "bg-yellow-300"
       : "bg-red-300";
+
   const StudyModeIcon = () =>
     studyMode?.toLowerCase() === "online" ? (
       <Wifi className="text-blue-500" size={16} />
