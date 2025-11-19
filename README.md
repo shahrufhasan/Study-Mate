@@ -44,3 +44,10 @@ It is a simple, responsive, and user-friendly platform for managing study tasks 
 1. **Clone the repository**  
 ```bash
 git clone https://github.com/shahrufhasan/Study-Mate.git
+cd Study-Mate
+npm install
+MONGO_URI=your-mongodb-connection-string
+PORT=5000
+npm start
+
+##Live Link 
