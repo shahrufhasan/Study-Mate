@@ -12,10 +12,10 @@ It is a simple, responsive, and user-friendly platform for managing study tasks 
 ---
 
 ## 🛠️ Main Technologies Used
-- **Frontend:** React, JavaScript, HTML5, CSS3  
+- **Frontend:** React, JavaScript, HTML5, Tailwind ans Daisy Ui
 - **Backend:** Node.js, Express  
 - **Database:** MongoDB  
-- **Hosting / Deployment:** Netlify (frontend) / *(Add backend hosting if applicable)*  
+- **Hosting / Deployment:** Netlify (frontend) / Vercel(for backend) 
 
 ---
 
